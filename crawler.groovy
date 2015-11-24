@@ -13,6 +13,9 @@ import com.github.igorsuhorukov.phantomjs.PhantomJsDowloader;
 /**
  */
 public class Crawler {
+
+    public static final java.lang.String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36"
+
     public static void run(String baseUrl) {
 
         def phantomJsPath = PhantomJsDowloader.getPhantomJsPath()
@@ -20,7 +23,7 @@ public class Crawler {
         def DesiredCapabilities caps = new DesiredCapabilities();
         caps.setJavascriptEnabled(true);
         caps.setCapability("takesScreenshot", true);
-        caps.setCapability("userAgent", "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36");
+        caps.setCapability("userAgent", com.github.igorsuhorukov.phantomjs.Crawler.USER_AGENT);
         caps.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, phantomJsPath);
 
         def WebDriver driver = new PhantomJSDriver(caps);
@@ -44,13 +47,12 @@ public class Crawler {
             }
         }
         String screenshotAs = driver.getScreenshotAs(OutputType.BASE64);
-        def String html = """<html><head><meta http-equiv="content-type" content="text/html; charset=UTF-8"></head><body>
-                                <p>${name}</p><p>${lastVisited}</p>
-                                <img alt="Embedded Image" src="data:image/png;base64,${screenshotAs}"></body></html>"""
-
         File resultFile = File.createTempFile("phantomjs", ".html");
         OutputStreamWriter streamWriter = new OutputStreamWriter(new FileOutputStream(resultFile), "UTF-8");
-        IOUtils.write(html, streamWriter);
+        IOUtils.write("""<html><head><meta http-equiv="content-type" content="text/html; charset=UTF-8"></head><body>
+                                <p>${name}</p><p>${lastVisited}</p>
+                                <img alt="Embedded Image" src="data:image/png;base64,${screenshotAs}"></body>
+                        </html>""", streamWriter);
         IOUtils.closeQuietly(streamWriter);
 
         println "html ${resultFile} created"
