@@ -7,7 +7,7 @@ import org.openqa.selenium.*
 import org.openqa.selenium.phantomjs.PhantomJSDriver
 import org.openqa.selenium.phantomjs.PhantomJSDriverService
 import org.openqa.selenium.remote.DesiredCapabilities
-@Grab(group='com.github.igor-suhorukov', module='phantomjs-runner', version='1.0')
+@Grab(group='com.github.igor-suhorukov', module='phantomjs-runner', version='1.1')
 import com.github.igorsuhorukov.phantomjs.PhantomJsDowloader
 
 /**
